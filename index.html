@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" type="image/png" sizes="16x16" href="fav.png">
+  <link rel="stylesheet" type="text/css" href="./styles/style.css">
+  <script type="text/javascript" src="./lib/jquery-2.1.4.min.js"></script>  
+  <script src="./lib/connect-streams.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9"> 
+  <title>MyNikqik</title>
+</head>
+<body>
+  <div class="logo">
+    <img src="./nikqik.png" alt="" style="max-width: 180px; height: auto; top: 0px;">
+  </div>
+  <div class="ccp-body">
+    <div id="containerDiv">  
+
+    </div>
+    
+    <div class="info-table" style="position: relative;">
+      <button id="floating-heading">Contact Details</button>
+      <table>
+        <tr>
+          <td class="center-text" colspan="2"><p style="padding: 1.5px;"></p></td>
+        </tr>
+        <tr>
+          <td>Customer Name</td>
+           <td id="callerName"></td>
+        </tr>
+        <tr>
+          <td>Phone Number</td>
+           <td id="phoneNumber"></td>
+        </tr>
+        <tr>
+          <td>Contact ID</td>
+           <td id="contactID"></td>
+        </tr>
+        <tr>
+          <td>Reason for Call</td>
+          <td id="callerIssue"></td>
+        </tr>
+        <!-- <tr>
+          <td>Voice ID Registered</td>
+           <td id="voiceID"></td>
+        </tr>
+        <tr>
+          <td>Voice Authenticated</td>
+          <td></td>
+        </tr> -->
+        <tr>
+          <td class="center-text" colspan="2"><h4 style="font-size: 17px; ">Agent Information</h4></td>
+        </tr>
+        <tr>
+          <td>Agent Name</td>
+           <td id="agentName"></td>
+        </tr>
+        <tr>
+          <td>Routing Profile</td>
+          <td id="routingProfile" ></td>
+        </tr>
+        <tr>
+          <td class="center-text" colspan="2">
+            <p style="font-size: 17px;"><strong>Queue Information</strong></p>
+          </td>
+        </tr>
+
+        <!-- queueDetails array will update from here below -->
+        <tr>
+          <td colspan="2">
+            <table id="queueTable" style="width: 100%">
+              <tbody id="queueTableBody">
+                <!-- queueDetails array will update here -->
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        
+      </table>
+      
+    </div>
+ 
+    <div class="floating-box">
+    
+      <h4 style="padding: 50px; font-size: 19px; margin: 0; top: 10px; position: relative;">Agent to Agent CCP</h4>
+  
+      <div class="agentCCP">
+        <div>
+          <p>Quick Connects</p>
+        </div>
+        <form name="agentdropdown" id="agents">
+          <legend style="margin-bottom: 10px;"><b>Agent Calling</b></legend>
+          <div class="agentDropdown">
+            <table class="table">
+              <tbody id="attributes-table-body">
+                <tr class="attributes-table-row">
+                  <td >
+                    <label for="agents" class="agentList">Select Agent</label>
+                    <select id="agentCalling" name="agentCalling" style="display: inline; " >
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br>
+            <div>
+              <input type=button id="placeCall" class="placeCall" value="Call"></input>
+            </div>
+  
+          </div>
+        </form>
+         
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+  <br>
+  <div class="line-container">
+    <button class="floating-button">Recording Status</button>
+  </div>
+  <br>
+<div class="recording-controls">
+      <button id="button1" onclick="callAPI(1)">Start</button>
+      <button id="button2" onclick="callAPI(2)">Stop</button>
+      <button id="button3" onclick="callAPI(3)">Pause</button>
+      <button id="button4" onclick="callAPI(4)">Resume</button>
+</div>
+<script>
+  function toggleButton(buttonId) {
+    var button = document.getElementById("button" + buttonId);
+
+    // Remove the "clicked" class from all buttons
+    var buttons = document.getElementsByClassName("recording-controls")[0].getElementsByTagName("button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove("clicked");
+    }
+
+    // Add the "clicked" class to the clicked button
+    button.classList.add("clicked");
+  }
+</script>
+  <script src="./scripts/api.js"></script>
+  <script type="text/javascript" src="./scripts/agentcall.js">  </script>
+  
+  <script type="text/javascript">
+    (function(w, d, x, id){
+      s=d.createElement('script');
+      s.src='https://d1nv5i00u1m742.cloudfront.net/amazon-connect-chat-interface-client.js';
+      s.async=1;
+      s.id=id;
+      d.getElementsByTagName('head')[0].appendChild(s);
+      
+      w[x] =  w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
+    })(window, document, 'amazon_connect', '1902d3fc-664c-4cdb-8cbe-d407988fa958');
+
+    window.onload = function() {
+            
+        // Select the parent div tag
+        const parentDiv = document.getElementById('amazon-connect-chat-widget');
+        // Select the first grandchild of above parent
+        const firstChildDiv = parentDiv.querySelector('div:first-child');
+        const secOFfirst = firstChildDiv.children[1]
+        // Add a class to the first child div tag
+        secOFfirst.classList.add('chat-widget');
+    };
+
+    amazon_connect('styles', { openChat: { color: '#ffffff', backgroundColor: '#16191d'}, closeChat: { color: '#ffffff', backgroundColor: '#16191d'} });
+    amazon_connect('snippetId', 'QVFJREFIZ01Jd0tCR2plMkhsVEN5MXZ4NGo4TmdXemxhYVZ5ckQxdDBiOXZnTUdTM3dGdFBCRE9xa0g5Qk5UNmlhaHpDQWVQQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNcHlha01lRnhaVS9hbDlnc0FnRVFnQ3VSa3NyVmJyWmF3dW14b3dDSFdwVi83VnBhSVphRFVhZUJYaUpXWGluWGVuU3RVSWo3cHdKZW5qNGM6Oi93RjV0eThuRy9ldXF6Z0FZUlRqdjNSeC9aNHI0U3JjQXE0NXpodjRoLzUyWXl5MTQ4Y3pJYld6ZDNFclFsSS85VGlhcEhtU2JDeS9QWjJTcFNrMnFTUWh1L1huc3VnbUVEVW1PcjVRLzFWMzlaV05PcUp4VDFlYWJZR2FhSTJFeTNwMkFCSitsSnZmUXIyem85TG85OXFFQ2FzQjZCMD0=');
+    amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown' ]);
+    
+  </script>
+
+</body>
+</html>
+
